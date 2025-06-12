@@ -1,55 +1,55 @@
-import './css/styles.css';
-import './js/pixabay-api.js';
-import './js/render-functions.js';
+import './css/styles.css';   // підключаю свої стилі, щоб сторінка мала оформлення.
+import './js/pixabay-api.js'; // підключаю модуль pixabay-api.js, де знаходиться функція для HTTP-запиту
+import './js/render-functions.js';  // підключаю модуль render-functions.js, де зібрані функції для роботи з інтерфейсом.
 
-import { getImagesByQuery } from './js/pixabay-api';
+import { getImagesByQuery } from './js/pixabay-api';  //беру функцію getImagesByQuery() для отримання картинок
 import {
-  createGallery,
-  clearGallery,
-  showLoader,
-  hideLoader,
-} from './js/render-functions';
+  createGallery,  //  створює картки зображень
+  clearGallery,   //  створює картки зображень
+  showLoader,     // показує лоадер(індикатор завантаження)
+  hideLoader,     // ховає лоадер   
+} from './js/render-functions'; 
 
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
+import iziToast from 'izitoast';  // імпортую iziToast для показу помилок користувачу
+import 'izitoast/dist/css/iziToast.min.css';  // імпортую стилі iziToast(підключаю)
 
-const form = document.querySelector('.form');
+const form = document.querySelector('.form'); // беру DOM-елемент моєї форми з класом .form, щоб додати обробник подій
 
 form.addEventListener('submit', async e => {
-  e.preventDefault();
+  e.preventDefault(); // запобігаю перезавантаженню
 
-  const query = e.target.elements['search-text'].value.trim();
+  const query = e.target.elements['search-text'].value.trim();  // отримую значення з поля вводу з класом search-text, видаляю пробіли(trim)
 
-  if (!query) {
+  if (!query) {  // Якщо поле порожнє(користувач не ввів нічого) — показую попередження через iziToast
     iziToast.warning({
       message: 'Please enter a search query!',
       position: 'topRight',
     });
-    return;
+    return;  // Якщо порожнє — виходжу з функції (return).
   }
-
-  clearGallery();
-  showLoader();
-
+// готую інтерфейс до нового пошуку:
+  clearGallery();  // очищаю галерею перед новим пошуком
+  showLoader();  // показую лоадер — показую користувачу, що зараз триває завантаження
+// запит до Pixabay:
   try {
-    const data = await getImagesByQuery(query);
+    const data = await getImagesByQuery(query); //викликаю getImagesByQuery(query) — тобто надсилаю HTTP-запит.
 
-    if (data.hits.length === 0) {
+    if (data.hits.length === 0) { // Якщо масив картинок порожній — показую повідомлення через iziToast.
       iziToast.error({
         message:
           'Sorry, there are no images matching your search query. Please try again!',
         position: 'topRight',
       });
-      return;
+      return; // зупиняю виконання (бо нема що малювати)
     }
-
-    createGallery(data.hits);
-  } catch (error) {
+//створюю галерею
+    createGallery(data.hits); // Передаю масив зображень у функцію createGallery()-вона будує розмітку картинок на сторінці.
+  } catch (error) {  // обробляю помилки
     iziToast.error({
-      message: 'Oops! Something went wrong.',
+      message: 'Oops! Something went wrong.',  // показую помилку користувачу
       position: 'topRight',
     });
   } finally {
-    hideLoader();
+    hideLoader();  // ховаю лоадер після запиту, що завершився(успішно або ні)
   }
 });

@@ -1,17 +1,17 @@
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import SimpleLightbox from 'simplelightbox';  // імпорт бібліотеки simplelightbox
+import 'simplelightbox/dist/simple-lightbox.min.css'; // імпорт стилів бібліотеки
 
-const gallery = document.querySelector('.gallery');
-const loader = document.querySelector('.loader');
+const gallery = document.querySelector('.gallery'); // ел-т, куди додаватиметься галерея
+const loader = document.querySelector('.loader');  // індикатор завантаження
 
-let lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
+let lightbox = new SimpleLightbox('.gallery a', { // ініціалізація Lightbox
+  captionsData: 'alt', // підписи до зображень(з alt)
+  captionDelay: 250,   // затримка підписів
 });
 
-export function createGallery(images) {
-  const markup = images
-    .map(
+export function createGallery(images) { // ф-я для створення галереї
+  const markup = images // перебираю масив зображень
+    .map( 
       ({
         webformatURL,
         largeImageURL,
@@ -20,7 +20,7 @@ export function createGallery(images) {
         views,
         comments,
         downloads,
-      }) => `
+      }) => ` 
         <li class="gallery-item">
           <a href="${largeImageURL}">
             <img src="${webformatURL}" alt="${tags}" loading="lazy" />
@@ -32,21 +32,21 @@ export function createGallery(images) {
             <p>Downloads: ${downloads}</p>
           </div>
         </li>`
-    )
-    .join('');
+    ) // розмітка
+    .join(''); // об'єдную в рядок
 
-  gallery.insertAdjacentHTML('beforeend', markup);
-  lightbox.refresh();
+  gallery.insertAdjacentHTML('beforeend', markup); // вставляю розмітку в галерею
+  lightbox.refresh(); // оновлюю lightbox  
 }
 
-export function clearGallery() {
-  gallery.innerHTML = '';
+export function clearGallery() {  // ф-я для очищення галереї
+  gallery.innerHTML = ''; // очищаю галерею і 
 }
 
-export function showLoader() {
-  loader.classList.remove('hidden');
+export function showLoader() { // ф-я для показу індикатора завантаження
+  loader.classList.remove('hidden');  // видаляю клас
 }
 
-export function hideLoader() {
-  loader.classList.add('hidden');
+export function hideLoader() { // ф-я для ховання індикатора завантаження
+  loader.classList.add('hidden'); // додаю классссс
 }
