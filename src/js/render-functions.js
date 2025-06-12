@@ -2,7 +2,7 @@ import SimpleLightbox from 'simplelightbox';  // імпорт бібліотек
 import 'simplelightbox/dist/simple-lightbox.min.css'; // імпорт стилів бібліотеки
 
 const gallery = document.querySelector('.gallery'); // ел-т, куди додаватиметься галерея
-const loader = document.querySelector('.loader');  // індикатор завантаження
+const loader = document.querySelector('.loader-backdrop');  // індикатор завантаження
 
 let lightbox = new SimpleLightbox('.gallery a', { // ініціалізація Lightbox
   captionsData: 'alt', // підписи до зображень(з alt)
@@ -44,9 +44,9 @@ export function clearGallery() {  // ф-я для очищення галере�
 }
 
 export function showLoader() { // ф-я для показу індикатора завантаження
-  loader.classList.remove('hidden');  // видаляю клас
+  loaderBackdrop.classList.remove('is-hidden');  // видаляю клас
 }
 
 export function hideLoader() { // ф-я для ховання індикатора завантаження
-  loader.classList.add('hidden'); // додаю классссс
+  loaderBackdrop.classList.add('is-hidden'); // додаю классссс
 }
